@@ -1,0 +1,5 @@
+Flask==2.3.3
+markdown==3.5.2
+bleach==6.1.0
+pymongo==4.6.1
+requests==2.31.0

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Advisor - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 30px 0;
+            color: #334155;
+        }
+        .dashboard-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 35px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .dashboard-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        .welcome-section {
+            margin-bottom: 35px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 20px;
+        }
+        .welcome-section h3 {
+            color: #4338ca;
+            font-weight: 600;
+            font-size: 24px;
+        }
+        .welcome-section p {
+            color: #6b7280;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+        .application-card {
+            border: none;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            padding: 25px;
+            transition: all 0.3s;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .application-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+            border-radius: 4px 0 0 4px;
+        }
+        .application-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .btn-new-application {
+            background: linear-gradient(to right, #6366f1, #8b5cf6);
+            border: none;
+            padding: 12px 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s;
+        }
+        .btn-new-application:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+        }
+        .nav-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .nav-section h2 {
+            color: #1e293b;
+            font-weight: 700;
+            font-size: 28px;
+            margin: 0;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            border: 1px dashed #d1d5db;
+        }
+        .empty-state i {
+            font-size: 70px;
+            color: #9ca3af;
+            margin-bottom: 25px;
+        }
+        .empty-state h4 {
+            color: #4338ca;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .empty-state p {
+            color: #6b7280;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .user-welcome {
+            display: flex;
+            align-items: center;
+            background: rgba(99, 102, 241, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+        .user-welcome .bi-person-circle {
+            font-size: 20px;
+            margin-right: 10px;
+            color: #4338ca;
+        }
+        .user-welcome span {
+            font-weight: 500;
+            color: #4338ca;
+        }
+        .btn-outline-danger {
+            border-radius: 8px;
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .btn-outline-danger:hover {
+            background-color: #ef4444;
+            color: white;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+        }
+        .card-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .card-details {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .card-details strong {
+            color: #334155;
+            font-weight: 500;
+        }
+        .btn-outline-primary {
+            border-radius: 8px;
+            border: 1px solid #6366f1;
+            color: #6366f1;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .btn-outline-primary:hover {
+            background-color: #6366f1;
+            color: white;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+        }
+        .app-date {
+            display: inline-block;
+            background-color: rgba(99, 102, 241, 0.1);
+            color: #4338ca;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-top: 5px;
+        }
+        .app-amount {
+            font-weight: 600;
+            color: #0f766e;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-section">
+            <h2><i class="bi bi-bank me-2"></i>Loan Advisor</h2>
+            <div class="d-flex align-items-center">
+                <div class="user-welcome">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Welcome, {{ username }}</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i>Logout
+                </a>
+            </div>
+        </div>
+        
+        <div class="dashboard-container">
+            <div class="welcome-section">
+                <h3>Your Loan Applications</h3>
+                <p>View your existing applications or create a new one to receive personalized financial advice.</p>
+            </div>
+            
+            <a href="{{ url_for('loan_form') }}" class="btn btn-primary btn-new-application">
+                <i class="bi bi-plus-circle me-2"></i> New Loan Application
+            </a>
+            
+            {% if applications|length > 0 %}
+                <div class="row">
+                    {% for app in applications %}
+                    <div class="col-md-6">
+                        <div class="application-card">
+                            <h5 class="card-title"><i class="bi bi-file-earmark-text me-2"></i>{{ app.name }}'s Application</h5>
+                            <div class="card-details">
+                                <p class="app-amount">${{ app.loanAmount }}</p>
+                                <p>
+                                    <strong>Purpose:</strong> {{ app.loanPurpose }}<br>
+                                    <span class="app-date">
+                                        <i class="bi bi-calendar me-1"></i>
+                                        {{ app.created_at.strftime('%B %d, %Y') if app.created_at else 'N/A' }}
+                                    </span>
+                                </p>
+                                <a href="{{ url_for('view_application', application_id=app._id) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye me-1"></i> View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="bi bi-folder"></i>
+                    <h4>No Applications Yet</h4>
+                    <p>You haven't created any loan applications yet. Click the "New Loan Application" button to get started with your financial planning.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 

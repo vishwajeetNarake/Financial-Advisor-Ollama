@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loan Advisor Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 2rem 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-top: 1.5rem;
+      color: #2563eb;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      margin-top: 1.25rem;
+      color: #4b5563;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin: 0.5rem 0;
+      line-height: 1.6;
+    }
+
+    .highlight {
+      background: #eef2ff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+
+    .section {
+      margin-top: 1.75rem;
+    }
+
+    .recommendation {
+      background: #f0fdf4;
+      border-left: 4px solid #34d399;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #374151;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+      border-color: #2563eb;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .nav-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .timestamp {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Chat interface styles */
+    .chat-container {
+      margin-top: 2rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #f3f4f6;
+      padding: 0.8rem 1.2rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-title {
+      font-weight: 600;
+      color: #4b5563;
+      margin: 0;
+    }
+
+    .chat-body {
+      padding: 1rem;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .chat-message {
+      margin-bottom: 1rem;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .user-message {
+      background: #eef2ff;
+      padding: 0.7rem 1rem;
+      border-radius: 12px 12px 0 12px;
+      display: inline-block;
+      max-width: 80%;
+      margin-left: auto;
+      align-self: flex-end;
+    }
+
+    .assistant-message {
+      background: #f3f4f6;
+      padding: 0.7rem 1rem;
+      border-radius: 12px 12px 12px 0;
+      display: inline-block;
+      max-width: 80%;
+    }
+
+    .chat-input-container {
+      display: flex;
+      padding: 0.8rem;
+      border-top: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .chat-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+
+    .send-button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0 1rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .send-button:hover {
+      background: #1d4ed8;
+    }
+
+    .send-button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .chat-message-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-timestamp {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 0.2rem;
+    }
+
+    .user-timestamp {
+      text-align: right;
+    }
+
+    .assistant-timestamp {
+      text-align: left;
+    }
+
+    .loading-indicator {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    #chatMessages {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .user-container {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+    }
+    
+    .assistant-container {
+      display: flex;
+      justify-content: flex-start;
+      width: 100%;
+    }
+    
+    .advice-content {
+      line-height: 1.6;
+    }
+    
+    .advice-heading {
+      font-weight: 600;
+      color: #4b5563;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .advice-paragraph {
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-section">
+      <h1>Loan Advisor</h1>
+      {% if session.get('user_id') %}
+      <div>
+        <span>Welcome, {{ session.get('username') }}</span>
+        <a href="{{ url_for('dashboard') }}" class="btn" style="margin-left: 10px;">Dashboard</a>
+        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+      </div>
+      {% else %}
+      <div>
+        <a href="{{ url_for('login') }}" class="btn">Login</a>
+        <a href="{{ url_for('register') }}" class="btn">Register</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <h2>🎉 Loan Application Submitted</h2>
+    <p class="highlight">✅ Application ID: {{ application_id }}</p>
+    <p class="timestamp">Submitted on {{ timestamp }}</p>
+
+    <div class="section">
+      <h2>💬 Financial Advisor Response</h2>
+      <p>{{ advice | safe }}</p>
+    </div>
+
+    <!-- Chat interface -->
+    <div class="section">
+      <h2>💬 Ask Follow-up Questions</h2>
+      <p>Have questions about your loan or financial advice? Chat with our AI financial advisor below.</p>
+      
+      <div class="chat-container">
+        <div class="chat-header">
+          <h3 class="chat-title">Financial Advisor Chat</h3>
+        </div>
+        <div class="chat-body">
+          <div id="chatMessages">
+            <div class="chat-message">
+              <div class="chat-message-container">
+                <div class="assistant-container">
+                  <div class="assistant-message">
+                    Hello! I'm your AI financial advisor. Feel free to ask any questions about your loan application or financial advice.
+                  </div>
+                </div>
+                <div class="message-timestamp assistant-timestamp">
+                  {{ timestamp }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-container">
+          <input type="text" id="chatInput" class="chat-input" placeholder="Type your question here..." autocomplete="off">
+          <button id="sendButton" class="send-button">
+            <i class="bi bi-send"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      {% if session.get('user_id') %}
+      <a href="{{ url_for('dashboard') }}" class="btn">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+      </a>
+      {% else %}
+      <a href="{{ url_for('loan_form') }}" class="btn">
+        <i class="bi bi-arrow-left"></i> Back to Loan Form
+      </a>
+      <a href="{{ url_for('login') }}" class="btn btn-primary">
+        Create an Account to Save Results
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatInput = document.getElementById('chatInput');
+      const sendButton = document.getElementById('sendButton');
+      const chatMessages = document.getElementById('chatMessages');
+      const applicationId = '{{ application_id }}';
+      
+      // Load chat history if available
+      loadChatHistory();
+      
+      // Send message on button click
+      sendButton.addEventListener('click', sendMessage);
+      
+      // Send message on Enter key
+      chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+      
+      function sendMessage() {
+        const question = chatInput.value.trim();
+        if (!question) return;
+        
+        // Disable input and button while processing
+        chatInput.disabled = true;
+        sendButton.disabled = true;
+        sendButton.innerHTML = '<span class="loading-indicator"></span>';
+        
+        // Display user message
+        const userMessage = createMessageElement(question, 'user');
+        chatMessages.appendChild(userMessage);
+        
+        // Clear input
+        chatInput.value = '';
+        
+        // Scroll to bottom
+        scrollToBottom();
+        
+        // Send request to server
+        fetch(`/chat/${applicationId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ question: question }),
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Display assistant response
+          const assistantMessage = createMessageElement(data.response_html, 'assistant', true);
+          chatMessages.appendChild(assistantMessage);
+          
+          // Scroll to bottom
+          scrollToBottom();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          const errorMessage = createMessageElement('Sorry, there was an error processing your request. Please try again later.', 'assistant');
+          chatMessages.appendChild(errorMessage);
+          scrollToBottom();
+        })
+        .finally(() => {
+          // Re-enable input and button
+          chatInput.disabled = false;
+          sendButton.disabled = false;
+          sendButton.innerHTML = '<i class="bi bi-send"></i>';
+          chatInput.focus();
+        });
+      }
+      
+      function createMessageElement(content, type, isHtml = false) {
+        const now = new Date();
+        const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        const messageContainer = document.createElement('div');
+        messageContainer.className = 'chat-message';
+        
+        const messageContentContainer = document.createElement('div');
+        messageContentContainer.className = 'chat-message-container';
+        
+        const containerDiv = document.createElement('div');
+        containerDiv.className = type === 'user' ? 'user-container' : 'assistant-container';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = type === 'user' ? 'user-message' : 'assistant-message';
+        
+        if (isHtml) {
+          messageContent.innerHTML = content;
+        } else {
+          messageContent.textContent = content;
+        }
+        
+        containerDiv.appendChild(messageContent);
+        messageContentContainer.appendChild(containerDiv);
+        
+        const messageTimestamp = document.createElement('div');
+        messageTimestamp.className = `message-timestamp ${type}-timestamp`;
+        messageTimestamp.textContent = timestamp;
+        messageContentContainer.appendChild(messageTimestamp);
+        
+        messageContainer.appendChild(messageContentContainer);
+        
+        return messageContainer;
+      }
+      
+      function scrollToBottom() {
+        const chatBody = document.querySelector('.chat-body');
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      
+      function loadChatHistory() {
+        fetch(`/application/${applicationId}/chat_history`)
+          .then(response => {
+            if (!response.ok) {
+              if (response.status === 403) {
+                // User not authorized to view this chat history
+                return null;
+              }
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data && data.chat_history && data.chat_history.length > 0) {
+              data.chat_history.forEach(chat => {
+                const userMessage = createMessageElement(chat.question, 'user');
+                const assistantMessage = createMessageElement(chat.formatted_response, 'assistant', true);
+                
+                chatMessages.appendChild(userMessage);
+                chatMessages.appendChild(assistantMessage);
+              });
+              
+              // Scroll to bottom after loading chat history
+              scrollToBottom();
+            }
+          })
+          .catch(error => {
+            console.error('Error loading chat history:', error);
+            // Don't show error message to user as this is not critical
+          });
+      }
+    });
+  </script>
+</body>
+</html>

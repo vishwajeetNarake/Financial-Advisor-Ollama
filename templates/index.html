@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loan Eligibility & Options Form</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .form-container {
+      margin-top: 50px;
+      padding: 30px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .section-title {
+      border-bottom: 2px solid #dee2e6;
+      padding-bottom: 5px;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .nav-buttons a {
+      margin-left: 10px;
+      text-decoration: none;
+    }
+    .currency-help {
+      font-size: 0.8rem;
+      color: #6c757d;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="form-container">
+          <div class="nav-header">
+            <h2>Loan Eligibility & Options Form</h2>
+            <div class="nav-buttons">
+              {% if session.get('user_id') %}
+                <span class="me-2">Welcome, {{ session.get('username') }}</span>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-sm">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
+              {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm">Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-outline-success btn-sm">Register</a>
+              {% endif %}
+            </div>
+          </div>
+          
+          <form action="/submit" method="POST">
+            <!-- 1. Personal Details -->
+            <div class="mb-4">
+              <div class="section-title">Personal Details</div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="age" class="form-label">Age</label>
+                  <input type="number" class="form-control" id="age" name="age" placeholder="Enter your age" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="occupation" class="form-label">Occupation</label>
+                  <select class="form-select" id="occupation" name="occupation" required>
+                    <option value="">Select Occupation</option>
+                    <option value="Student">Student</option>
+                    <option value="Salaried">Salaried</option>
+                    <option value="Self-Employed">Self-Employed</option>
+                    <option value="Retired">Retired</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="annualIncome" class="form-label">Annual Income</label>
+                <input type="text" class="form-control" id="annualIncome" name="annualIncome" placeholder="Enter your annual income (e.g., 5 lakh, 1.5 cr)" required>
+                <div class="currency-help">You can enter values like '5 lakh', '1.5 cr', or '150000'</div>
+              </div>
+            </div>
+
+            <!-- 2. Loan Requirements -->
+            <div class="mb-4">
+              <div class="section-title">Loan Requirements</div>
+              <div class="mb-3">
+                <label for="loanAmount" class="form-label">Loan Amount Needed</label>
+                <input type="text" class="form-control" id="loanAmount" name="loanAmount" placeholder="Enter loan amount (e.g., 10 lakh, 1 cr)" required>
+                <div class="currency-help">You can enter values like '10 lakh', '1 cr', or '1000000'</div>
+              </div>
+              <div class="mb-3">
+                <label for="loanPurpose" class="form-label">Purpose of the Loan</label>
+                <select class="form-select" id="loanPurpose" name="loanPurpose" required>
+                  <option value="">Select Purpose</option>
+                  <option value="Education">Education</option>
+                  <option value="Home Improvement">Home Improvement</option>
+                  <option value="Business">Business</option>
+                  <option value="Medical">Medical</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="repaymentTenure" class="form-label">Repayment Tenure</label>
+                <input type="text" class="form-control" id="repaymentTenure" name="repaymentTenure" placeholder="Enter months or years (e.g., 60 months)" required>
+              </div>
+            </div>
+
+            <!-- 3. Credit Profile -->
+            <div class="mb-4">
+              <div class="section-title">Credit Profile</div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="creditScore" class="form-label">Current Credit Score</label>
+                  <input type="number" class="form-control" id="creditScore" name="creditScore" placeholder="If available">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="existingDebt" class="form-label">Existing Loans/Debt Obligations</label>
+                  <input type="text" class="form-control" id="existingDebt" name="existingDebt" placeholder="Sum of existing obligations (e.g., 2 lakh)">
+                  <div class="currency-help">You can enter values like '2 lakh', '50000', etc.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Financial Situation -->
+            <div class="mb-4">
+              <div class="section-title">Financial Situation</div>
+              <div class="mb-3">
+                <label for="monthlyExpenses" class="form-label">Monthly Expenses</label>
+                <input type="text" class="form-control" id="monthlyExpenses" name="monthlyExpenses" placeholder="Include rent, utilities, food, etc." required>
+                <div class="currency-help">Enter monthly expenses (e.g., '25000', '0.25 lakh')</div>
+              </div>
+              <div class="mb-3">
+                <label for="savings" class="form-label">Savings / Emergency Fund Availability</label>
+                <input type="text" class="form-control" id="savings" name="savings" placeholder="Total savings available" required>
+                <div class="currency-help">Enter your savings (e.g., '3 lakh', '300000')</div>
+              </div>
+            </div>
+
+            <!-- 5. Income Stability -->
+            <div class="mb-4">
+              <div class="section-title">Income Stability</div>
+              <div class="mb-3">
+                <label for="incomeFrequency" class="form-label">Frequency of Income</label>
+                <select class="form-select" id="incomeFrequency" name="incomeFrequency" required>
+                  <option value="">Select frequency</option>
+                  <option value="Monthly">Monthly</option>
+                  <option value="Quarterly">Quarterly</option>
+                  <option value="Annually">Annually</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="jobStability" class="form-label">Job Stability & Expected Annual Increments</label>
+                <textarea class="form-control" id="jobStability" name="jobStability" rows="2" placeholder="Describe your job security and expected salary increments" required></textarea>
+              </div>
+            </div>
+
+            <!-- 6. Loan Goals -->
+            <div class="mb-4">
+              <div class="section-title">Loan Goals</div>
+              <div class="mb-3">
+                <label for="loanGoals" class="form-label">What the Loan is Intended to Achieve</label>
+                <textarea class="form-control" id="loanGoals" name="loanGoals" rows="2" placeholder="E.g., paying off high-interest debt, financing a big purchase" required></textarea>
+              </div>
+            </div>
+
+            <!-- 7. Risk Tolerance -->
+            <div class="mb-4">
+              <div class="section-title">Risk Tolerance</div>
+              <div class="mb-3">
+                <label for="riskTolerance" class="form-label">Comfort Level with Taking on Debt</label>
+                <select class="form-select" id="riskTolerance" name="riskTolerance" required>
+                  <option value="">Select your level</option>
+                  <option value="Low">Low</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 8. Preferred Loan Options -->
+            <div class="mb-4">
+              <div class="section-title">Preferred Loan Options</div>
+              <div class="mb-3">
+                <label for="loanType" class="form-label">Type of Loan</label>
+                <select class="form-select" id="loanType" name="loanType" required>
+                  <option value="">Select a loan type</option>
+                  <option value="Personal">Personal</option>
+                  <option value="Home">Home</option>
+                  <option value="Education">Education</option>
+                  <option value="Business">Business</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <!-- Conditional input for "Other" loan type -->
+              <div class="mb-3" id="otherLoanBox" style="display:none;">
+                <label for="otherLoanType" class="form-label">Please Specify the Loan Type</label>
+                <input type="text" class="form-control" id="otherLoanType" name="otherLoanType" placeholder="Enter the custom loan type">
+              </div>
+              <div class="mb-3">
+                <label for="repaymentStructure" class="form-label">Interest Rate & Repayment Structure Preferences</label>
+                <textarea class="form-control" id="repaymentStructure" name="repaymentStructure" rows="2" placeholder="E.g., fixed rate, flexible repayment plan" required></textarea>
+              </div>
+            </div>
+
+            <!-- Senior Citizen Specific Options -->
+            <div class="mb-4">
+              <div class="section-title">Senior Citizen Loan Options</div>
+              <p class="text-muted">For individuals like a senior citizen (e.g., 85 years old), please consider these conservative loan options:</p>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" value="Annuity-based Loan" id="annuities" name="seniorOptions">
+                <label class="form-check-label" for="annuities">
+                  Annuity-based Loan (to supplement retirement income)
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" value="Long-term Care Insurance" id="longTermCare" name="seniorOptions">
+                <label class="form-check-label" for="longTermCare">
+                  Long-term Care Insurance (for potential healthcare expenses)
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" value="Reverse Mortgage" id="reverseMortgage" name="seniorOptions">
+                <label class="form-check-label" for="reverseMortgage">
+                  Reverse Mortgage (home equity loan for seniors)
+                </label>
+              </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Submit & Check Eligibility</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // JavaScript to show/hide the "Other Loan Type" input based on the selection
+    const loanTypeSelect = document.getElementById("loanType");
+    const otherLoanBox = document.getElementById("otherLoanBox");
+    
+    loanTypeSelect.addEventListener("change", function() {
+      if (this.value === "Other") {
+        otherLoanBox.style.display = "block";
+      } else {
+        otherLoanBox.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
